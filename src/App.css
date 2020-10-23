@@ -1,0 +1,156 @@
+header {
+  width: 100%;
+  height: 80px;
+  background-color: brown;
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+header ul {
+  display: flex;
+}
+
+header ul li {
+  font-size: 14px;
+  list-style: none;
+  margin-left: 16px;
+  color: #fefefe;
+}
+
+header ul li:first-child {
+  margin-left: 0;
+}
+
+header ul li:last-child {
+  margin-right: 24px;
+}
+
+a {
+  text-decoration: none !important;
+  color: #fefefe !important;
+}
+
+.container {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  margin: auto;
+  padding-bottom: 64px;
+}
+
+.content {
+  width: 100%;
+  margin-left: 32px;
+}
+
+.content table button a {
+  color: black !important;
+}
+
+.content-home {
+  width: 48%;
+  margin-left: 32px;
+}
+
+.title {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.card {
+  width: 100%;
+  margin-right: 16px;
+  margin-bottom: 16px;
+}
+
+.isi-home {
+  width: 100%;
+  display: flex;
+}
+
+
+.btn-detail {
+  width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.card-title {
+  height: 65px;
+}
+
+.orderlist-demo .product-item {
+  display: flex;
+  align-items: center;
+  padding: .5rem;
+  width: 100%;
+}
+
+.orderlist-demo .product-item img {
+  width: 75px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  margin-right: 1rem;
+}
+
+.orderlist-demo .product-item .product-list-detail {
+  flex: 1 1 0;
+}
+
+.orderlist-demo .product-item .product-list-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.orderlist-demo .product-item .product-category-icon {
+  vertical-align: middle;
+  margin-right: .5rem;
+}
+
+.orderlist-demo .product-item .product-category {
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.p-orderlist .p-orderlist-controls {
+  display: none;
+}
+
+@media screen and (max-width: 576px) {
+  .orderlist-demo .product-item {
+      flex-wrap: wrap;
+  }
+
+  .orderlist-demo .product-item .image-container {
+      width: 100%;
+      text-align: center;
+  }
+
+  .orderlist-demo .product-item img {
+      margin: 0 0 1rem 0;
+      width: 100px;
+  }
+}
+
+.btn-action {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-edit {
+  background-color: yellow;
+  margin-top: 8px;
+}
+
+.btn-view {
+  background-color: aqua;
+  margin-top: 8px;
+}
+
+.btn-del {
+  background-color: red;
+  margin-top: 8px;
+}
