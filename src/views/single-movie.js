@@ -24,6 +24,7 @@ const SingleMovie = ()=>{
 
   return (
  <div className="container">
+   <div className="content">
     <div className="isi">
         <div className="content-movie">
             <div className="movie-img">
@@ -39,13 +40,16 @@ const SingleMovie = ()=>{
                     <p>{data !==  null && data.rating}</p>
                 </div>
                 <div className="btn-mov">
-                    <Link to="/movie"> 
-                    <button className="btn-del">Back to List</button>
-                  </Link>
-                </div> 
+                  <Link to="/movie"> 
+                  <button className="btn-del">Back to List</button>
+                </Link>
+                </div>
+              
             </div>
         </div>   
-    </div>   
+    </div>  
+
+   </div> 
  </div>
    
   )

@@ -25,7 +25,8 @@ const SGames = ()=>{
 
   return (
     <div className="container">
-    <div className="isi">
+      <div className="content">
+      <div className="isi">
         <div className="content-movie">
             <div className="movie-img">
                 <img src= {data !==  null && data.image_url}/>
@@ -47,6 +48,8 @@ const SGames = ()=>{
             </div>
         </div>   
     </div>   
+      </div>
+ 
  </div>
   )
 }
