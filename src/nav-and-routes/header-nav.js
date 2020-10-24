@@ -6,6 +6,8 @@ import {
     Redirect,
     Link
   } from "react-router-dom";
+import { Layout, Menu, Breadcrumb } from 'antd';
+import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import MovieList from '../views/movie'
 import Login from '../views/login'
 import {UserProvider} from '../context/user-context'
@@ -15,11 +17,17 @@ import HomeView from '../views/home'
 import {UserContext} from '../context/user-context'
 import SingleMovie from '../views/single-movie'
 import SingleMovieEdit from '../views/single-movie-edit'
+import SGames from '../views/single-games'
 import axios from "axios"
+import SidebarMenu from '../views/sidebar'
+
+const { Header, Content, Sider } = Layout;
 
   const HeaderNav = () => {
 
     const [user,setUser] = useContext(UserContext);
+    const { SubMenu } = Menu;
+
 
     const PrivateRoute = ({ user, ...props }) => {
       return user ? <Route {...props} /> : <Redirect to="/login" />;
@@ -35,7 +43,7 @@ import axios from "axios"
       return(
         <Router>
          <Route>
-        <header>
+        <Header className="header">
         <ul>
             <li>
                 <Link className="menus" to="/home">Home</Link>
@@ -66,8 +74,7 @@ import axios from "axios"
 
         
         </ul>
-        </header>
-        
+        </Header>
         </Route>
         <Switch>
             <Route exact path="/home">
@@ -84,6 +91,9 @@ import axios from "axios"
             </PrivateRoute>
             <Route exact path="/games">
                 <GameList />
+            </Route>
+            <Route exact path="/games/:id">
+                <SGames />
             </Route>
             <LoginRoute exact path="/register" user={user}>
               <RegisterForm />

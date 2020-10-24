@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Axios from 'axios';
-import { Table,Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Table, Button, Typography, Space } from "antd";
 import { UserContext } from '../context/user-context'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  Link
+} from "react-router-dom";
 
 const GameList = () => {
     const [user] = useContext(UserContext)
@@ -179,13 +186,24 @@ const GameList = () => {
         setSelectedId(itemId)
         setStatusForm("edit")
       }
+
+      const handleVIew = () => {
+        let gamesSingle = games.filter(el => el.id !== itemId)
+        Axios.get(`https://www.backendexample.sanbersy.com/api/games/${itemId}`).then(res => {
+          console.log(res.data)
+        })
+        setGames([...gamesSingle])
+      }
   
       return(
-        <>
-          <button onClick={handleEdit}>Edit</button>
-          &nbsp;
-          <button onClick={handleDelete}>Delete</button>
-        </>
+       
+        <div className="btn-action">
+          <button className="btn-edit" onClick={handleEdit}>Edit</button>
+          <button className="btn-del" onClick={handleDelete}>Delete</button>
+          <button className="btn-view" onClick={handleVIew} value={itemId}>
+            <Link to={`/games/${itemId}`}> View </Link>
+          </button>
+        </div>
       )
     }
   
@@ -226,114 +244,136 @@ const GameList = () => {
     const handleChangeSearch = (e)=>{
       setSearch(e.target.value)
     }
+    const columns = [
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "title",
+        width: 200,
+      },
+      {
+        title: "Genre",
+        dataIndex: "genre",
+        key: "genre",
+      },
+      {
+        title: "Pingleplayer",
+        dataIndex: "singlePlayer",
+        key: "singlePlayer",
+        tableLayout: "auto",
+      },
+      {
+        title: "Multiplayer",
+        dataIndex: "multiplayer",
+        key: "multiplayer",
+        tableLayout: "auto",
+      },
+      {
+        title: "Platform",
+        dataIndex: "platform",
+        key: "platform",
+      },
+      {
+        title: "Release",
+        dataIndex: "release",
+        key: "release",
+        tableLayout: "auto",
+        sorter: {
+          compare: (a, b) => a.release - b.release,
+          multiple: 1,
+        },
+      },
+      {
+        title: "Action",
+        key: "action",
+        render: (e) => (
+          <Space size="middle">
+            <Link to={`games/${e.id}`} >
+              <Button>View</Button>
+            </Link>
+
+            <Link to={`games/edit/${e.id}`}>
+              <Button>Edit</Button>
+            </Link>
+          
+            <Button id={e.id}  title="Delete">
+              Delete
+            </Button>
+          </Space>
+        ),
+        width: 200,
+      },
+  ]
   
     return(
       <>
-      <div className="container">
-            <div className="content">
-            <form onSubmit={submitSearch}>
-                <input type="text" value={search} onChange={handleChangeSearch} />
-                <button>search</button>
+      <div className="container">     
+        <div className="content">
+            <h1>daftar Games</h1>
+            <form className="search" onSubmit={submitSearch}>
+            <input type="text" value={search} onChange={handleChangeSearch} />
+            <button>search</button>
             </form>
-            </div>
+            <Table columns={columns} dataSource={games}  />
         </div>
-      <div className="container">
+      </div>
+          <div className="container">
             <div className="content">
-                <h1>daftar Games</h1>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th scope="row"></th>
-                            <th>No</th>
-                            <th>Name</th>
-                            <th>Genre</th>
-                            <th>singlePlayer</th>
-                            <th>Multiplayer</th>
-                            <th>platform</th>
-                            <th>Release</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            games !== null && games.map((item, index)=>{
-                                return(                    
-                                    <tr key={index}>
-                                    <th scope="row"></th>
-                                    <td>{index+1}</td>
-                                    <td>{item.name}</td>
-                                    <td>{item.genre}</td>
-                                    <td>{item.singlePlayer}</td>
-                                    <td>{item.multiplayer}</td>
-                                    <td>{item.platform}</td>
-                                    <td>{item.release}</td>
-                                    <td>
-                                       <Action itemId={item.id} />
-                                    </td>
-                                    </tr>
-                                )
-                            })
-                        }
-                    </tbody>
-                </Table>
-            </div>
-        </div>
-        <div className="container">
-            <div className="content">
-                <h1>Movies Form</h1>
-                <form onSubmit={handleSubmit}>
-                <div>
-                    <label style={{float: "left"}}>
+                <h1>Form Submit New Games</h1>
+                <form className="form-input" onSubmit={handleSubmit}>
+                <div className="input">
+                    <label >
                     Name:
                     </label>
-                    <input style={{float: "right"}} type="text" name="name" value={input.name} onChange={handleChange}/>
+                    <input type="text" name="name" value={input.name} onChange={handleChange}/>
                     <br/>
                     <br/>
                 </div>
-                <div>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label >
                     Genre:
                     </label>
-                    <textarea style={{float: "right"}} type="text" name="genre" value={input.genre} onChange={handleChange}/>
+                    <textarea type="text" name="genre" value={input.genre} onChange={handleChange}/>
                     <br/>
                     <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input" style={{marginTop: "20px"}}>
+                    <label >
                     singlePlayer:
                     </label>
-                    <input style={{float: "right"}} type="text" name="singlePlayer" value={input.singlePlayer} onChange={handleChange}/>
+                    <input type="text" name="singlePlayer" value={input.singlePlayer} onChange={handleChange}/>
                     <br/>
                     <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input" style={{marginTop: "20px"}}>
+                    <label >
                     Multiplayer:
                     </label>
-                    <input style={{float: "right"}} type="text" name="multiplayer" value={input.multiplayer} onChange={handleChange}/>
+                    <input type="text" name="multiplayer" value={input.multiplayer} onChange={handleChange}/>
                     <br/>
                     <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input" style={{marginTop: "20px"}}>
+                    <label >
                     Platform:
                     </label>
-                    <input style={{float: "right"}} type="text" name="platform" value={input.platform} onChange={handleChange}/>
+                    <input type="text" name="platform" value={input.platform} onChange={handleChange}/>
                     <br/>
                     <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input" style={{marginTop: "20px"}}>
+                    <label >
                     Release:
                     </label>
-                    <input style={{float: "right"}} type="text" name="release" value={input.release} onChange={handleChange}/>
+                    <input type="text" name="release" value={input.release} onChange={handleChange}/>
                     <br/>
                     <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input" style={{marginTop: "20px"}}>
+                    <label >
                     Image Url:
                     </label>
-                    <textarea style={{float: "right"}} cols="50" rows="3" type="text" name="image_url" value={input.image_url} onChange={handleChange}/>
+                    <input type="text" cols="50" rows="3" type="text" name="image_url" value={input.image_url} onChange={handleChange}/>
                     <br/>
                     <br/>
                 </div>
@@ -342,7 +382,7 @@ const GameList = () => {
                 <button>submit</button>
                 </form>
             </div>
-        </div>
+          </div>
       </>
     )
 }

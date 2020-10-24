@@ -14,7 +14,8 @@ const SingleMovieEdit = ()=>{
     genre: "",
     rating: 0
   })
-  const [selectedId, setSelectedId]  =  useState(0)    
+  const [selectedId, setSelectedId]  =  useState(0)  
+  const [statusForm, setStatusForm]  =  useState("create")  
 
 
   useEffect(() => {
@@ -71,89 +72,93 @@ const SingleMovieEdit = ()=>{
   }
 
   const movieEditSubmit = () => {
-    Axios.put(`https://backendexample.sanbersy.com/api/data-movie`, {
+    if(statusForm === "edit"){
+      Axios.put(`https://www.backendexample.sanbersy.com/api/movies/${selectedId}`, {
         title: input.title,
         description: input.description,
         year: input.year,
         duration: input.duration,
         genre: input.genre,
-        rating: parseInt(input.rating)
+        rating: parseInt(input.rating),
+        image_url: input.image_url
       })
       .then(res => {
-          res.title = input.title
-          res.description = input.description
-          res.year = input.year
-          res.duration = input.duration
-          res.genre = input.genre
-          res.rating = input.rating
-      }).catch(console.error())
+          let singleMovie = movies.find(el=> el.id === selectedId)
+          singleMovie.title = input.title
+          singleMovie.description = input.description
+          singleMovie.year = input.year
+          singleMovie.duration = input.duration
+          singleMovie.genre = input.genre
+          singleMovie.rating = input.rating
+          singleMovie.image_url = input.image_url
+      })
+    }
+    
+    setStatusForm("create")
+    setSelectedId(0)
+    setInput({
+      title: "",
+      description: "",
+      year: 2020,
+      duration: 120,
+      genre: "",
+      rating: 0,
+      image_url: " "
+    })
   }
 
   return (
     <>
-        <div className="container">
+       <div className="container">
             <div className="content">
-                <h1>Movies Form</h1>
-                <form onSubmit={movieEditSubmit}>
-                <div>
-                    <label style={{float: "left"}}>
+                <h1>Form Submit New Movie</h1>
+                <form className="form-input" onSubmit={movieEditSubmit}>
+                <div className="input">
+                    <label>
                     Title:
                     </label>
                     <input style={{float: "right"}} type="text" name="title" value={input.title} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Description:
                     </label>
                     <textarea style={{float: "right"}} type="text" name="description" value={input.description} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Year:
                     </label>
                     <input style={{float: "right"}} type="number" max={2020} min={1980}  name="year" value={input.year} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Duration:
                     </label>
                     <input style={{float: "right"}} type="number" name="duration" value={input.duration} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Genre:
                     </label>
-                    <input style={{float: "right"}} type="text" name="genre" value={input.genre} onChange={handleChange} />
-                    <br/>
-                    <br/>
+                    <input style={{float: "right"}} type="text" name="genre" value={input.genre} onChange={handleChange}/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Rating:
                     </label>
                     <input style={{float: "right"}} type="number" max={10} min={0} name="rating" value={input.rating} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Image Url:
                     </label>
-                    <textarea style={{float: "right"}} cols="50" rows="3" type="text" name="image_url" value={input.image_url} onChange={handleChange}/>
-                    <br/>
-                    <br/>
+                    <input type="text" style={{float: "right"}} cols="50" rows="3" type="text" name="image_url" value={input.image_url} onChange={handleChange}/>
                 </div>
-                <br/>
-                <br/>
-                <button>submit</button>
+                <div className="submit">
+                    <button>submit</button>
+                </div>
+               
                 </form>
             </div>
         </div>

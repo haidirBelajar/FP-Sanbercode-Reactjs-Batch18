@@ -1,6 +1,7 @@
 import React, { useState,useContext ,useEffect } from 'react';
 import Axios from 'axios';
-import { Table } from 'reactstrap';
+import { Table, Button, Typography, Space } from "antd";
+import { UserContext } from '../context/user-context'
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,6 +12,7 @@ import {
 import SingleMovie from '../views/single-movie'
 
 const MovieList = () => {
+  const [user] = useContext(UserContext)
     const [movies, setMovies] =  useState(null)
     const [input, setInput]  =  useState({
       title: "",
@@ -104,7 +106,8 @@ const MovieList = () => {
             year: input.year,
             duration: input.duration,
             genre: input.genre,
-            rating: parseInt(input.rating)
+            rating: parseInt(input.rating),
+            image_url: input.image_url
           })
           .then(res => {
               setMovies([...movies, {id: res.data.id, ...input}])
@@ -116,7 +119,8 @@ const MovieList = () => {
             year: input.year,
             duration: input.duration,
             genre: input.genre,
-            rating: parseInt(input.rating)
+            rating: parseInt(input.rating),
+            image_url: input.image_url
           })
           .then(res => {
               let singleMovie = movies.find(el=> el.id === selectedId)
@@ -126,6 +130,7 @@ const MovieList = () => {
               singleMovie.duration = input.duration
               singleMovie.genre = input.genre
               singleMovie.rating = input.rating
+              singleMovie.image_url = input.image_url
               setMovies([...movies])
           })
         }
@@ -139,17 +144,19 @@ const MovieList = () => {
           duration: 120,
           genre: "",
           rating: 0,
-          image_url: ""
+          image_url: " "
         })
       }
   
     }
-  
-    const Action = ({itemId}) =>{
-      const handleDelete = () => {  
+
+      const handleDelete = ({itemId}) => {  
         let newMovies = movies.filter(el => el.id !== itemId)
-    
-        Axios.delete(`https://www.backendexample.sanbersy.com/api/movies/${itemId}`)
+        console.log({itemId})
+        Axios.delete(`https://backendexample.sanbersy.com/api/data-movie/${itemId}`,{
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }} )
         .then(res => {
           console.log(res)
         })
@@ -158,7 +165,7 @@ const MovieList = () => {
         
       }
       
-      const handleEdit = () =>{
+      const handleEdit = ({itemId}) =>{
         let singleMovie = movies.find(x=> x.id === itemId)
         setInput({
           title: singleMovie.title,
@@ -173,7 +180,7 @@ const MovieList = () => {
         setStatusForm("edit")
       }
 
-      const handleVIew = () => {
+      const handleVIew = ({itemId}) => {
         let movieSingle = movies.filter(el => el.id !== itemId)
         Axios.get(`https://www.backendexample.sanbersy.com/api/movies/${itemId}`).then(res => {
           console.log(res.data)
@@ -181,19 +188,6 @@ const MovieList = () => {
         setMovies([...movieSingle])
       }
      
-      return(
-        <div  className="btn-action">
-          <button className="btn-edit" onClick={handleEdit}>
-            <Link to={`movie/edit/${itemId}`}>Edit</Link>
-          </button>
-          <button className="btn-del" onClick={handleDelete}>Delete</button>
-          <button className="btn-view" onClick={handleVIew} value={itemId}>
-            <Link to={`/movie/${itemId}`}> View </Link>
-          </button>
-              
-        </div>
-      )
-    }
   
     function truncateString(str, num) {
       if (str === null){
@@ -232,129 +226,142 @@ const MovieList = () => {
     const handleChangeSearch = (e)=>{
       setSearch(e.target.value)
     }
+
+    const columns = [
+      {
+        title: "Title",
+        dataIndex: "title",
+        key: "title",
+        width: 200,
+      },
+      {
+        title: "Description",
+        dataIndex: "description",
+        key: "description",
+      },
+      {
+        title: "Year",
+        dataIndex: "year",
+        key: "year",
+        tableLayout: "auto",
+        sorter: {
+          compare: (a, b) => a.year - b.year,
+          multiple: 3,
+        },
+      },
+      {
+        title: "Duration",
+        dataIndex: "duration",
+        key: "duration",
+        tableLayout: "auto",
+        sorter: {
+          compare: (a, b) => a.duration - b.duration,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Genre",
+        dataIndex: "genre",
+        key: "genre",
+      },
+      {
+        title: "Rating",
+        dataIndex: "rating",
+        key: "rating",
+        tableLayout: "auto",
+        sorter: {
+          compare: (a, b) => a.rating - b.rating,
+          multiple: 1,
+        },
+      },
+      {
+        title: "Action",
+        key: "action",
+        render: (e) => (
+          <Space size="middle">
+            <Link to={`movie/${e.id}`} >
+              <Button>View</Button>
+            </Link>
+
+            <Link to={`movie/edit/${e.id}`}>
+              <Button>Edit</Button>
+            </Link>
+          
+            <Button id={e.id} onClick={handleDelete} title="Delete">
+              Delete
+            </Button>
+          </Space>
+        ),
+        width: 200,
+      },
+  ]
   
     return(
       <>
-        <div className="container">
-            <div className="content">
-            <form onSubmit={submitSearch}>
-                <input type="text" value={search} onChange={handleChangeSearch} />
-                <button>search</button>
-            </form>
-            </div>
-        </div>
-
-        <div className="container">
+          <div className="container">
             <div className="content">
                 <h1>Daftar Film</h1>
-                <Table hover>
-                <thead>
-                    <tr>
-                    <th></th>
-                    <th>No</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Year</th>
-                    <th>Duration</th>
-                    <th>Genre</th>
-                    <th>Rating</th>
-                    <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-        
-                    {
-                        movies !== null && movies.map((item, index)=>{
-                        return(                    
-                            <tr key={index}>
-                            <th scope="row"></th>
-                            <td>{index+1}</td>
-                            <td>{item.title}</td>
-                            <td title={item.description}>{truncateString(item.description, 20)}</td>
-                            <td>{item.year}</td>
-                            <td>{item.duration}</td>
-                            <td>{item.genre}</td>
-                            <td>{item.rating}</td>
-                            <td>
-                                <Action itemId={item.id} />
-                                
-                            </td>
-                            </tr>
-                        )
-                        })
-                    }
-                </tbody>
-                </Table>
+                <form className="search" onSubmit={submitSearch}>
+                  <input type="text" value={search} onChange={handleChangeSearch} />
+                  <button>search</button>
+                </form>
+                <Table columns={columns} dataSource={movies}  />
             </div>
-        </div>
-        
+          </div>
         {/* Form */}
-        <div className="container">
+          <div className="container">
             <div className="content">
-                <h1>Movies Form</h1>
-                <form onSubmit={handleSubmit}>
-                <div>
-                    <label style={{float: "left"}}>
+                <h1>Form Submit New Movie</h1>
+                <form className="form-input" onSubmit={handleSubmit}>
+                <div className="input">
+                    <label>
                     Title:
                     </label>
                     <input style={{float: "right"}} type="text" name="title" value={input.title} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Description:
                     </label>
                     <textarea style={{float: "right"}} type="text" name="description" value={input.description} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Year:
                     </label>
                     <input style={{float: "right"}} type="number" max={2020} min={1980}  name="year" value={input.year} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Duration:
                     </label>
                     <input style={{float: "right"}} type="number" name="duration" value={input.duration} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Genre:
                     </label>
                     <input style={{float: "right"}} type="text" name="genre" value={input.genre} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Rating:
                     </label>
                     <input style={{float: "right"}} type="number" max={10} min={0} name="rating" value={input.rating} onChange={handleChange}/>
-                    <br/>
-                    <br/>
                 </div>
-                <div style={{marginTop: "20px"}}>
-                    <label style={{float: "left"}}>
+                <div className="input">
+                    <label>
                     Image Url:
                     </label>
-                    <textarea style={{float: "right"}} cols="50" rows="3" type="text" name="image_url" value={input.image_url} onChange={handleChange}/>
-                    <br/>
-                    <br/>
+                    <input type="text" style={{float: "right"}} cols="50" rows="3" type="text" name="image_url" value={input.image_url} onChange={handleChange}/>
                 </div>
-                <br/>
-                <br/>
-                <button>submit</button>
+                <div className="submit">
+                    <button>submit</button>
+                </div>
+               
                 </form>
             </div>
-        </div>
+          </div>
       </>
     )
 }

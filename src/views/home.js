@@ -8,10 +8,10 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import '../App.css'
-  import { OrderList } from 'primereact/orderlist';
+import { OrderList } from 'primereact/orderlist';
 
 class HomeView extends React.Component {
-
+    
     state = {
         movie: [],
         games: []
@@ -65,7 +65,8 @@ class HomeView extends React.Component {
 
     render(){
         return(
-        <div className="container">
+        <>
+            <div className="container">
             <div className="title">
                 <h1>Selamat Datang Di Comoy Rental</h1>
             </div>
@@ -87,7 +88,8 @@ class HomeView extends React.Component {
                     </div>
                 </div>
             </div> 
-        </div> 
+        </div>
+        </> 
         )
     }
 }

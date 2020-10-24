@@ -50,35 +50,44 @@ const RegisterForm = () => {
  
   return (
     <>
-      <div style={{ margin: "0 auto", width: "25%", padding: "50px" }}>
-        <form onSubmit={handleSubmit}>
-          <label>name: </label>
-          <input
-            type="text"
-            name="name"
-            onChange={handleChange}
-            value={input.name}
-          />
-          <br />
-          <label>email: </label>
-          <input
-            type="email"
-            name="email"
-            onChange={handleChange}
-            value={input.email}
-          />
-          <br />
-          <label>Password: </label>
-          <input
-            type="password"
-            name="password"
-            onChange={handleChange}
-            value={input.password}
-          />
-          <br />
-          <button>Register</button>
-        </form>
-      </div>
+      <div className="container">
+          <div className="content-login">
+              <div className="card-login">   
+                <form className="form-input" onSubmit={handleSubmit}>
+                  <div className="input-login">
+                    <label>name: </label>
+                    <input
+                      type="text"
+                      name="name"
+                      onChange={handleChange}
+                      value={input.name}
+                    />
+                  </div>
+                  <div className="input-login">
+                    <label>email: </label>
+                    <input
+                      type="email"
+                      name="email"
+                      onChange={handleChange}
+                      value={input.email}
+                    />
+                  </div>
+                  <div className="input-login">
+                    <label>Password: </label>
+                    <input
+                      type="password"
+                      name="password"
+                      onChange={handleChange}
+                      value={input.password}
+                    />
+                  </div>
+                  <div className="submit">
+                     <button>Register</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
     </>
   );
 };
