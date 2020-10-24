@@ -316,8 +316,6 @@ const GameList = () => {
             </form>
             <Table columns={columns} dataSource={games}  />
         </div>
-      </div>
-          <div className="container">
             <div className="content">
                 <h1>Form Submit New Games</h1>
                 <form className="form-input" onSubmit={handleSubmit}>
@@ -377,9 +375,9 @@ const GameList = () => {
                     <br/>
                     <br/>
                 </div>
-                <br/>
-                <br/>
+                <div className="submit">
                 <button>submit</button>
+                </div>
                 </form>
             </div>
           </div>
