@@ -1,7 +1,7 @@
 import React, { useState,useContext ,useEffect } from 'react';
 import Axios from 'axios';
 import { Table, Button, Typography, Space } from "antd";
-import { UserContext } from '../context/user-context'
+import { UserContext } from '../context/context'
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,9 +12,10 @@ import {
 import SingleMovie from '../views/single-movie'
 
 const MovieList = () => {
-  const [user] = useContext(UserContext)
+    const [user] = useContext(UserContext)
     const [movies, setMovies] =  useState(null)
     const [input, setInput]  =  useState({
+      id: "",
       title: "",
       description: "",
       year: 2020,
@@ -113,7 +114,7 @@ const MovieList = () => {
               setMovies([...movies, {id: res.data.id, ...input}])
           })
         }else if(statusForm === "edit"){
-          Axios.put(`https://www.backendexample.sanbersy.com/api/movies/${selectedId}`, {
+          Axios.put(`https://www.backendexample.sanbersy.com/api/data-movies/${selectedId}`, {
             title: input.title,
             description: input.description,
             year: input.year,
@@ -123,15 +124,8 @@ const MovieList = () => {
             image_url: input.image_url
           })
           .then(res => {
-              let singleMovie = movies.find(el=> el.id === selectedId)
-              singleMovie.title = input.title
-              singleMovie.description = input.description
-              singleMovie.year = input.year
-              singleMovie.duration = input.duration
-              singleMovie.genre = input.genre
-              singleMovie.rating = input.rating
-              singleMovie.image_url = input.image_url
-              setMovies([...movies])
+             
+              console.log(res.data)
           })
         }
         
@@ -150,23 +144,28 @@ const MovieList = () => {
   
     }
 
-      const handleDelete = ({itemId}) => {  
-        let newMovies = movies.filter(el => el.id !== itemId)
-        console.log({itemId})
-        Axios.delete(`https://backendexample.sanbersy.com/api/data-movie/${itemId}`,{
-          headers: {
-            Authorization: `Bearer ${user.token}`
-          }} )
-        .then(res => {
-          console.log(res)
+   
+
+    const handleDelete = (e) => {
+      const id = e.target.id
+      console.log(id)
+      const url = `https://backendexample.sanbersy.com/api/data-movie/${id}`;
+      Axios.delete(url, { headers: { Authorization: `Bearer ${user.token}` } })
+        .then((res) => {
+          console.log(res);
+          setMovies(null);
         })
-              
-        setMovies([...newMovies])
-        
-      }
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+ 
+
+   
       
-      const handleEdit = ({itemId}) =>{
-        let singleMovie = movies.find(x=> x.id === itemId)
+      const handleEdit = (e) =>{
+        let singleMovie = movies.find(x=> x.id === e.id)
         setInput({
           title: singleMovie.title,
           description: singleMovie.description,
@@ -176,13 +175,13 @@ const MovieList = () => {
           rating: singleMovie.rating,
           image_url: singleMovie.image_url
         })
-        setSelectedId(itemId)
+        setSelectedId(e.id)
         setStatusForm("edit")
       }
 
-      const handleVIew = ({itemId}) => {
-        let movieSingle = movies.filter(el => el.id !== itemId)
-        Axios.get(`https://www.backendexample.sanbersy.com/api/movies/${itemId}`).then(res => {
+      const handleVIew = (e) => {
+        let movieSingle = movies.filter(el => el.id !== e.id)
+        Axios.get(`https://www.backendexample.sanbersy.com/api/movies/${e.id}`).then(res => {
           console.log(res.data)
         })
         setMovies([...movieSingle])
@@ -235,18 +234,12 @@ const MovieList = () => {
         width: 200,
       },
       {
-        title: "Description",
-        dataIndex: "description",
-        key: "description",
-      },
-      {
         title: "Year",
         dataIndex: "year",
         key: "year",
         tableLayout: "auto",
         sorter: {
           compare: (a, b) => a.year - b.year,
-          multiple: 3,
         },
       },
       {
@@ -256,7 +249,6 @@ const MovieList = () => {
         tableLayout: "auto",
         sorter: {
           compare: (a, b) => a.duration - b.duration,
-          multiple: 2,
         },
       },
       {
@@ -271,25 +263,23 @@ const MovieList = () => {
         tableLayout: "auto",
         sorter: {
           compare: (a, b) => a.rating - b.rating,
-          multiple: 1,
         },
       },
       {
         title: "Action",
         key: "action",
-        render: (e) => (
+        render: (el) => (
           <Space size="middle">
-            <Link to={`movie/${e.id}`} >
-              <Button>View</Button>
+            <Link to={`movie/${el.id}`} >
+             View
             </Link>
-
-            <Link to={`movie/edit/${e.id}`}>
-              <Button>Edit</Button>
+            <Link to={`movie/edit/${el.id}`}>
+             Edit
             </Link>
-          
-            <Button id={e.id} onClick={handleDelete} title="Delete">
-              Delete
-            </Button>
+              <a id={el.id} onClick={handleDelete} title="Delete">
+                Delete
+            </a>
+            
           </Space>
         ),
         width: 200,

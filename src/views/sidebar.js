@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Layout, Menu } from 'antd'
 import {UserOutlined} from 'antd'
-import {UserContext} from '../context/user-context'
+import {UserContext} from '../context/context'
 import {
     BrowserRouter as Router,
     Switch,

@@ -1,97 +1,108 @@
-import React, {Component} from 'react';
-import {
-    Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button
-  } from 'reactstrap';
-import Axios from 'axios'
-import 'primereact/resources/themes/saga-blue/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-import '../App.css'
-import { OrderList } from 'primereact/orderlist';
+import { Col, Row, Typography } from 'antd';
+import axios from 'axios';
+import React, { Component } from 'react';
+import { Card } from 'antd';
 
-class HomeView extends React.Component {
-    
-    state = {
-        movie: [],
-        games: []
+const { Meta } = Card;
+
+const { Title } = Typography;
+
+class HomeView extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            movie: [
+                {
+                    id: 0,
+                    title: "",
+                    description: "",
+                    year: 0,
+                    duration: 0,
+                    genre: "",
+                    rating: 8,
+                    review: null,
+                    image_url: ""
+                }
+            ],
+            
+            game: [
+                {
+                    id:0,
+                    name:"",
+                    genre:"",
+                    singlePlayer:0,
+                    multiplayer:0,
+                    platform:"",
+                    release:""
+                }
+            ]
+        };
     }
- 
-    componentDidMount(){
-        Axios.get('https://backendexample.sanbersy.com/api/data-movie').then(res=>{
-             this.setState({movie: res.data})   
-        })
-        Axios.get('https://backendexample.sanbersy.com/api/data-game').then(res=>{
-            this.setState({games: res.data})
-       })
+
+    componentDidMount() {
+        axios.get('https://backendexample.sanbersy.com/api/data-movie')
+            .then(response => {
+                this.setState({
+                    movie: response.data
+                })
+            })
+
+            axios.get('https://backendexample.sanbersy.com/api/data-game')
+            .then(response => {
+                this.setState({
+                    game: response.data
+                })
+            })
     }
-    
-    itemTemplate(movie) {
+
+    render() {
         return (
-          
-                    <div className="product-item">
-                        <div className="image-container">
-                            <img src={movie.image_url}  alt="image" />
-                        </div>
-                        <div className="product-list-detail">
-                            <h5 className="p-mb-2">{movie.title}</h5>
-                            <i className="pi pi-tag product-category-icon"></i>
-                            <span className="product-category">{movie.genre}</span>
-                        </div>
-                        <div className="product-list-action">
-                            <h6 className="p-mb-2">{movie.release}</h6>
-                        </div>
-                    </div>
+        <div className="content">
+            <Row>
+                <Col span={24}>
+                    <Title level={2}>Movies List</Title>
+                </Col>
+                <Col span={24}>
+                    &nbsp;
+                </Col>
+                {this.state.movie.map((m, index) => {
+                    return (
+                        <div key={m.id}>
+                            <Card
+                            hoverable
+                            style={{ width: 240 }}
+                            cover={<img alt="image" src={m.image_url} />}
+                            >
+                            <Meta title={m.title}/>
+                            </Card>      
+                        </div>      
+                        
+                    )
+                })}
+            <Col span={24}>
+                <Title level={2}>Games List</Title>
+            </Col>
+            <Col span={24}>
+                &nbsp;
+            </Col>
+            {this.state.game.map((x, index) => {
+                return (
+                    <div key={x.id}>
+                        <Card
+                        hoverable
+                        style={{ width: 240 }}
+                        cover={<img alt="image" src={x.image_url} />}
+                        >
+                        <Meta title={x.name}/>
+                        </Card>      
+                    </div>      
+                    
+                )
+            })}
+        </Row>
+    </div>
         );
-    }
-
-    itemTemplateGames(games) {
-        return (
-             <div className="product-item">
-                        <div className="image-container">
-                            <img src={games.image_url}  alt="image" />
-                        </div>
-                        <div className="product-list-detail">
-                            <h5 className="p-mb-2">{games.name}</h5>
-                            <i className="pi pi-tag product-category-icon"></i>
-                            <span className="product-category">{games.genre}</span>
-                        </div>
-                        <div className="product-list-action">
-                            <h6 className="p-mb-2">{games.rating}</h6>
-                        </div>
-                    </div>
-        );
-    }
-
-    render(){
-        return(
-        <>
-            <div className="container">
-            <div className="title">
-                <h1>Selamat Datang Di Comoy Rental</h1>
-            </div>
-            <div className="isi-home">
-                <div className="content-home">
-                    <div className="orderlist-demo">
-                        <div className="card">
-                            <OrderList value={this.state.movie} header="Daftar Film" dragdrop listStyle={{height:'auto'}} dataKey="id"
-                            itemTemplate={this.itemTemplate} onChange={(e) => this.setState({ movie: e.value })}></OrderList>
-                        </div>
-                    </div>
-                </div>
-                <div className="content-home">
-                    <div className="orderlist-demo">
-                        <div className="card">
-                            <OrderList value={this.state.games} header="Daftar Game" dragdrop listStyle={{height:'auto'}} dataKey="id"
-                            itemTemplate={this.itemTemplateGames} onChange={(e) => this.setState({ games: e.value })}></OrderList>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div>
-        </> 
-        )
     }
 }
 
-export default HomeView
+export default HomeView;

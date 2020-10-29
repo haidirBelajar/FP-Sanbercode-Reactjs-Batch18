@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Axios from 'axios';
 import { Table, Button, Typography, Space } from "antd";
-import { UserContext } from '../context/user-context'
+import { UserContext } from '../context/context'
 import {
   BrowserRouter as Router,
   Switch,
@@ -146,34 +146,26 @@ const GameList = () => {
   
     }
   
-    const Action = ({itemId}) =>{
-      const handleDelete = () => {  
-        let newGames = games.filter(el => el.id !== itemId)
-        const url = `https://backendexample.sanbersy.com/api/data-game/${itemId}`;
+      const handleDelete = (e) => {  
+        const id = e.target.id
+        const url = `https://backendexample.sanbersy.com/api/data-game/${id}`;
        
-        console.log(user.token)
-      
-        // Axios.delete(url, {header : { Authorization : `Bearer ${user.token}`} })
-        // .then(res => {
-        //   console.log(res)
-        // })
-
         Axios.delete(url, {
           headers: {
             Authorization: `Bearer ${user.token}`
-          },
-          data: {
           }
         }).then(res =>{
           console.log(res)
+          setGames(null)
+        })
+        .catch((err)=>{
+          console.log(err)
         });
-              
-        setGames([...newGames])
         
       }
       
-      const handleEdit = () =>{
-        let singleGames = games.find(x=> x.id === itemId)
+      const handleEdit = (e) =>{
+        let singleGames = games.find(x=> x.id === e.id)
         setInput({
           name: singleGames.name,
           genre: singleGames.genre,
@@ -183,29 +175,18 @@ const GameList = () => {
           release: singleGames.release,
           image_url: singleGames.image_url
         })
-        setSelectedId(itemId)
+        setSelectedId(e.id)
         setStatusForm("edit")
       }
 
-      const handleVIew = () => {
-        let gamesSingle = games.filter(el => el.id !== itemId)
-        Axios.get(`https://www.backendexample.sanbersy.com/api/games/${itemId}`).then(res => {
+      const handleVIew = (e) => {
+        let gamesSingle = games.filter(el => el.id !== e.id)
+        Axios.get(`https://www.backendexample.sanbersy.com/api/games/${e.id}`).then(res => {
           console.log(res.data)
         })
         setGames([...gamesSingle])
       }
   
-      return(
-       
-        <div className="btn-action">
-          <button className="btn-edit" onClick={handleEdit}>Edit</button>
-          <button className="btn-del" onClick={handleDelete}>Delete</button>
-          <button className="btn-view" onClick={handleVIew} value={itemId}>
-            <Link to={`/games/${itemId}`}> View </Link>
-          </button>
-        </div>
-      )
-    }
   
     function truncateString(str, num) {
       if (str === null){
@@ -289,16 +270,16 @@ const GameList = () => {
         render: (e) => (
           <Space size="middle">
             <Link to={`games/${e.id}`} >
-              <Button>View</Button>
+              View
             </Link>
 
             <Link to={`games/edit/${e.id}`}>
-              <Button>Edit</Button>
+              Edit
             </Link>
           
-            <Button id={e.id}  title="Delete">
-              Delete
-            </Button>
+            <Link to="games" id={e.id}  title="Delete">
+              <a id={e.id} onClick={handleDelete}>Delete</a>
+            </Link>
           </Space>
         ),
         width: 200,

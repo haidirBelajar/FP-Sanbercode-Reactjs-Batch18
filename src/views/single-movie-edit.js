@@ -1,8 +1,11 @@
-import React, {useEffect, useState} from "react"
-import {useParams} from "react-router-dom"
+import React, {useEffect, useState, useContext,useHistory} from "react"
+import { useParams} from "react-router-dom"
 import Axios from "axios"
+import { UserContext } from '../context/context'
+
 
 const SingleMovieEdit = ()=>{
+  const [user] = useContext(UserContext)
   let {id} = useParams()
   const [data, setData] = useState(null)
   const [movies, setMovies] =  useState(null)
@@ -23,6 +26,7 @@ const SingleMovieEdit = ()=>{
       Axios.get(`https://backendexample.sanbersy.com/api/data-movie/${id}`)
       .then(res => {
         setInput(res.data)
+        console.log(res.data)
       })
     }
   }, [data, setData, id]);
@@ -71,9 +75,10 @@ const SingleMovieEdit = ()=>{
     }
   }
 
-  const movieEditSubmit = () => {
-    if(statusForm === "edit"){
-      Axios.put(`https://www.backendexample.sanbersy.com/api/movies/${selectedId}`, {
+  const handleEditForm = (e) => {
+    e.preventDefault()
+
+      Axios.put(`https://www.backendexample.sanbersy.com/api/movies/${id}`, {
         title: input.title,
         description: input.description,
         year: input.year,
@@ -81,19 +86,13 @@ const SingleMovieEdit = ()=>{
         genre: input.genre,
         rating: parseInt(input.rating),
         image_url: input.image_url
-      })
+      },
+      { headers: { Authorization: `Bearer ${user.token}` } })
       .then(res => {
-          let singleMovie = movies.find(el=> el.id === selectedId)
-          singleMovie.title = input.title
-          singleMovie.description = input.description
-          singleMovie.year = input.year
-          singleMovie.duration = input.duration
-          singleMovie.genre = input.genre
-          singleMovie.rating = input.rating
-          singleMovie.image_url = input.image_url
+          console.log(res)
       })
-    }
     
+
     setStatusForm("create")
     setSelectedId(0)
     setInput({
@@ -112,7 +111,7 @@ const SingleMovieEdit = ()=>{
        <div className="container">
             <div className="content">
                 <h1>Form Submit New Movie</h1>
-                <form className="form-input" onSubmit={movieEditSubmit}>
+                <form className="form-input">
                 <div className="input">
                     <label>
                     Title:
@@ -156,7 +155,7 @@ const SingleMovieEdit = ()=>{
                     <input type="text" style={{float: "right"}} cols="50" rows="3" type="text" name="image_url" value={input.image_url} onChange={handleChange}/>
                 </div>
                 <div className="submit">
-                    <button>submit</button>
+                    <button onClick={handleEditForm}>submit</button>
                 </div>
                
                 </form>

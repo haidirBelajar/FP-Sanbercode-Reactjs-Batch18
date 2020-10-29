@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { UserContext } from "../context/user-context";
+import { UserContext } from "../context/context";
 import axios from "axios";
  
 const RegisterForm = () => {

@@ -1,25 +1,28 @@
-import React, { useContext } from 'react';
+import { Layout, Menu, Breadcrumb } from 'antd';
+import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../context/context'
 import {
-    BrowserRouter as Router,
+    BrowserRouter as Router ,
     Switch,
     Route,
     Redirect,
     Link
   } from "react-router-dom";
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
-import MovieList from '../views/movie'
-import Login from '../views/login'
-import {UserProvider} from '../context/user-context'
-import GameList from '../views/games'
+import HomeView from '../views/home';
+import LoginForm from '../views/login'
 import RegisterForm from '../views/register'
-import HomeView from '../views/home'
-import {UserContext} from '../context/user-context'
+import 'antd/dist/antd.css';
+import MenuItem from 'antd/lib/menu/MenuItem';
+import MovieView from '../views/movie'
+import GameView from '../views/games'
 import SingleMovie from '../views/single-movie'
 import SingleMovieEdit from '../views/single-movie-edit'
 import SGames from '../views/single-games'
-import axios from "axios"
-import SidebarMenu from '../views/sidebar'
+import SingleGameEdit from '../views/single-game-edit';
+import ChangePassword from '../views/change_password';
+
+const { SubMenu } = Menu;
 
 const { Header, Content, Sider } = Layout;
 
@@ -41,71 +44,97 @@ const { Header, Content, Sider } = Layout;
       setUser(null);
     }
       return(
-        <Router>
-         <Route>
-        <Header className="header">
-        <ul>
-            <li>
-                <Link className="menus" to="/home">Home</Link>
-            </li>
-           
-            { user ?
-                <>
-                 <li>
-                <Link className="menus" to="/movie">Movie</Link>
-                </li>
-                <li>
-                    <Link to="/games">Games</Link>
-                </li>
-                </>
-                : <></>
-             }
-            { user ?  <></> :
-            <>
-            <li>
-                 <Link className="menus" to="/register">Register</Link>
-                </li>
-            <li>
-                 <Link className="menus" to="/login">Login</Link>
-            </li></>  }
-            {user ?<li>
-                 <Link className="menus" to="/login" onClick={Logout}>Logout</Link>
-                </li> : <></> }
-
-        
-        </ul>
-        </Header>
-        </Route>
-        <Switch>
-            <Route exact path="/home">
-              <HomeView/>
-            </Route>
-            <PrivateRoute exact path="/movie" user={user}>
-              <MovieList/>
-            </PrivateRoute>
-            <PrivateRoute exact path="/movie/:id" user={user}>
-              <SingleMovie/>
-            </PrivateRoute>
-            <PrivateRoute exact path="/movie/edit/:id" user={user}>
-              <SingleMovieEdit/>
-            </PrivateRoute>
-            <Route exact path="/games">
-                <GameList />
-            </Route>
-            <Route exact path="/games/:id">
-                <SGames />
-            </Route>
-            <LoginRoute exact path="/register" user={user}>
-              <RegisterForm />
-            </LoginRoute>
-            <LoginRoute exact path="/login" user={user}>
-              <Login />
-            </LoginRoute>
-          </Switch>
-        </Router>
-       
+        <Layout>
+            <Router>
+                <Header>
+                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+                        <Menu.Item key="1">
+                            <Link to="/">Home</Link>
+                        </Menu.Item>
+                        { user ? <></> : <>
+                        <Menu.Item key="2">
+                            <Link to="/register">Register</Link>
+                        </Menu.Item>
+                        <Menu.Item key="3">
+                            <Link to="/login">Login</Link>
+                        </Menu.Item>
+                        </> }
+                    </Menu>
+                </Header>
+               <Content>
+               <Layout className="site-layout-background">
+                    <Sider className="site-layout-background" width={150}>
+                    {user ? <>
+                    <Menu
+                        mode="inline"
+                        defaultSelectedKeys={['1']}
+                        defaultOpenKeys={['sub1']}
+                        style={{ height: '100%' }}
+                    >
+                     
+                        <SubMenu key="sub1" icon={<UserOutlined />} title={user.name}>
+                        <Menu.Item key="1">
+                            <Link to="/change_password">
+                                Change Password
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="2">
+                          <Link to="/login" onClick={Logout}>Logout</Link>
+                        </Menu.Item>
+                        </SubMenu>
+                        <SubMenu key="sub2" icon={<LaptopOutlined />} title="Movie">
+                        <Menu.Item key="3">
+                            <Link to="/movie">Movie</Link>
+                        </Menu.Item>
+                        </SubMenu>
+                        <SubMenu key="sub3" icon={<NotificationOutlined />} title="Games">
+                        <Menu.Item key="4">
+                            <Link to="/games">Game</Link>
+                        </Menu.Item>
+                        </SubMenu>
+                    </Menu>
+                    </> : <></> }
+                    </Sider>
+                    <Content style={{ padding: '0 24px', minHeight: 280 }}>
+                        <Switch>
+                            <Route exact path="/">
+                                <HomeView/>
+                            </Route>
+                            <Route exact path="/register">
+                                <RegisterForm />
+                            </Route>
+                            <Route exacth path="/login">
+                                <LoginForm />
+                            </Route>
+                            <Route exacth path="/change_password">
+                                <ChangePassword />
+                            </Route>
+                            <Route exact path="/movie">
+                                <MovieView />
+                            </Route>
+                            <Route exact path="/movie/:id" user={user}>
+                              <SingleMovie />
+                            </Route>
+                            <Route exact path="/movie/edit/:id">
+                                <SingleMovieEdit />
+                            </Route>
+                            <Route exact path="/games">
+                                <GameView />
+                            </Route>
+                            <Route exact path="/games/:id" user={user}>
+                              <SGames />
+                            </Route>
+                            <Route exact path="/games/edit/:id">
+                                <SingleGameEdit />
+                            </Route>
+                        </Switch>
+                    </Content>
+                 </Layout>
+            </Content>
+               
+            </Router>
+        </Layout>
       )
-  
     
   }
   export default HeaderNav
