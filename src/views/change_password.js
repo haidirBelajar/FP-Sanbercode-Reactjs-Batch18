@@ -62,7 +62,8 @@ const ChangePassword = () => {
         }
 
     return (
-        <>
+        <div className="container-content">
+          <div className="content">
         <h1>Change Password</h1>
         <form className="form-input" onSubmit={handleSubmit}>
             <div className="input">
@@ -81,7 +82,8 @@ const ChangePassword = () => {
                 <button>Submit</button>
             </div>
         </form>
-        </>
+        </div>
+      </div>
     ) 
 }
 

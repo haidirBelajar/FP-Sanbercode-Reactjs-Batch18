@@ -21,7 +21,7 @@ const Login = () =>{
         var currentUser = {name: user.name, email: user.email, token }
         setUser(currentUser)
         localStorage.setItem("user", JSON.stringify(currentUser))
-        history.push("/home")
+        history.push("/")
       }
       
     ).catch((err)=>{
@@ -48,15 +48,14 @@ const Login = () =>{
 
   return(
     <>
-      <div className="container">
-          <div className="content-login">
-            <div className="card-login">
+      <div className="container-content">
+          <div className="content">
               <form className="form-input" onSubmit={handleSubmit}>
-              <div className="input-login">
+              <div className="input">
                 <label>Email: </label>
                 <input type="email" name="email" onChange={handleChange} value={input.email}/>
               </div>
-              <div className="input-login">
+              <div className="input">
                 <label>Password: </label>
                 <input type="password" name="password" onChange={handleChange} value={input.password}/>
               </div>
@@ -64,10 +63,7 @@ const Login = () =>{
                 <button>Login</button>
               </div>
             </form>
-            </div>
-         
           </div>
-       
       </div>
     </>
   )

@@ -8,6 +8,12 @@ import {
   Redirect,
   Link
 } from "react-router-dom";
+import { Col, Row, Typography } from 'antd';
+import { Card } from 'antd';
+
+const { Meta } = Card;
+
+const { Title } = Typography;
 
 const SGames = ()=>{
   let {id} = useParams()
@@ -24,7 +30,7 @@ const SGames = ()=>{
   }, [data, setData, id]);
 
   return (
- <div className="container">
+ <div className="container-content">
    <div className="content">
     <div className="isi">
         <div className="content-movie">

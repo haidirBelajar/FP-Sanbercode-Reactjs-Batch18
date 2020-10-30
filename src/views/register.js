@@ -50,11 +50,10 @@ const RegisterForm = () => {
  
   return (
     <>
-      <div className="container">
-          <div className="content-login">
-              <div className="card-login">   
+      <div className="container-content">
+          <div className="content">  
                 <form className="form-input" onSubmit={handleSubmit}>
-                  <div className="input-login">
+                  <div className="input">
                     <label>name: </label>
                     <input
                       type="text"
@@ -63,7 +62,7 @@ const RegisterForm = () => {
                       value={input.name}
                     />
                   </div>
-                  <div className="input-login">
+                  <div className="input">
                     <label>email: </label>
                     <input
                       type="email"
@@ -72,7 +71,7 @@ const RegisterForm = () => {
                       value={input.email}
                     />
                   </div>
-                  <div className="input-login">
+                  <div className="input">
                     <label>Password: </label>
                     <input
                       type="password"
@@ -85,7 +84,6 @@ const RegisterForm = () => {
                      <button>Register</button>
                   </div>
                 </form>
-              </div>
             </div>
           </div>
     </>

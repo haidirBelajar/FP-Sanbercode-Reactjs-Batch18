@@ -1,3 +1,16 @@
+.container {
+  padding-top : 32px;
+  padding-bottom: 64px;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.container-content {
+  padding-top : 32px;
+  padding-bottom: 64px;
+  height: 100vh !important;
+  width: 100% !important;
+}
 
 .form-input {
   margin-top: 10px;
@@ -30,6 +43,7 @@
 
 .input input {
   width: 70%;
+  margin-left: 32px;
   outline: none;
   background-color: transparent;
   border: none;
@@ -67,4 +81,85 @@
   height: 150px;
   border-top-left-radius: 10px !important;
   border-top-right-radius: 10px !important;
+}
+
+.ant-layout-sider {
+  background-color: #F0F2F5;
+}
+
+.ant-layout-sider-children {
+  background-color: #F0F2F5;
+}
+
+.ant-form-item {
+  padding: 16px 16px !important;
+}
+
+.sp-mp {
+  display: flex;
+  justify-content: space-between;
+
+}
+.ant-layout-footer{
+  display: flex !important;
+  justify-content: space-between !important;
+  background-color: #001529 !important;
+  color: #fff !important;
+}
+
+.content {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.content h1 {
+  text-align: center !important;
+}
+
+.form-search {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.isi {
+  width: 50%;
+}
+
+.content-movie {
+  border: 1px solid aqua;
+  display: flex;
+  border-radius: 15px;
+  padding: 24px;
+}
+
+
+.movie-img {
+  width: 50%;
+}
+
+.movie-img img {
+  width: 100%;
+}
+
+.movie-desc {
+  margin-left: 16px;
+}
+
+.ant-layout-footer ul {
+  display: flex;
+}
+
+.ant-layout-footer ul li {
+  list-style: none;
+  margin-left: 24px;
+}
+
+.btn-move {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }

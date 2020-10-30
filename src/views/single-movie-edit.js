@@ -2,6 +2,13 @@ import React, {useEffect, useState, useContext,useHistory} from "react"
 import { useParams} from "react-router-dom"
 import Axios from "axios"
 import { UserContext } from '../context/context'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  Link
+} from "react-router-dom";
 
 
 const SingleMovieEdit = ()=>{
@@ -110,6 +117,7 @@ const SingleMovieEdit = ()=>{
     <>
        <div className="container">
             <div className="content">
+              <img src="/FP-Sanbercode-Reactjs-Batch18/public/icon/iconfinder_undo-back-arrow_2931166.svg" alt="back"/>
                 <h1>Form Submit New Movie</h1>
                 <form className="form-input">
                 <div className="input">
@@ -159,6 +167,12 @@ const SingleMovieEdit = ()=>{
                 </div>
                
                 </form>
+
+                <div className="btn-mov">
+                  <Link to="/movie"> 
+                  <button className="btn-del">Back to List</button>
+                </Link>
+                </div>
             </div>
         </div>
     </>

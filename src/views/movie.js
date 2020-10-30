@@ -297,9 +297,7 @@ const MovieList = () => {
                 </form>
                 <Table columns={columns} dataSource={movies}  />
             </div>
-          </div>
         {/* Form */}
-          <div className="container">
             <div className="content">
                 <h1>Form Submit New Movie</h1>
                 <form className="form-input" onSubmit={handleSubmit}>

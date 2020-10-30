@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Axios from 'axios';
 import { Table, Button, Typography, Space } from "antd";
+import { Form, Input, Checkbox, InputNumber } from "antd";
+import { Container, Row, Col, Label } from "reactstrap";
 import { UserContext } from '../context/context'
 import {
   BrowserRouter as Router,
@@ -16,8 +18,8 @@ const GameList = () => {
     const [input,setInput] = useState({
        name: "",
        genre:"",
-       singlePlayer: "",
-       multiplayer: "",
+       singlePlayer: 0,
+       multiplayer: 0,
        platform: "",
        release: "",
     })
@@ -87,64 +89,33 @@ const GameList = () => {
       }
     }
   
-    const handleSubmit = (event) =>{
-      // menahan submit
-      event.preventDefault()
+    const handleSubmit = (values) => {
+      let singlePlayer = values.mode.includes("one") ? 1 : 0;
+      let multiPlayer = values.mode.includes("two") ? 1 : 0;
   
-      let nama = input.name
-      console.log(input)
+      const newData = {
+        name: values.name,
+        genre: values.genre,
+        singlePlayer: singlePlayer,
+        multiplayer: multiPlayer,
+        platform: values.platform,
+        release: values.release,
+        image_url: values.image_url,
+      };
+      console.log(newData, " cek values");
   
-      if (nama.replace(/\s/g,'') !== ""){      
-        if (statusForm === "create"){        
-            Axios.post(`https://backendexample.sanbersy.com/api/data-game`, {
-              name: input.name,
-              genre: input.genre,
-              singlePlayer: input.singlepalyer,
-              multiplayer: input.multiplayer,
-              platform: input.platform,
-              release: input.release
-            },{
-              headers : { "Authorization" : `Bearer ${user.token}`} 
-            })
-            .then(res => {
-                setGames([...games, {id: res.data.id, ...input}])
-            })
-          }else if(statusForm === "edit"){
-            Axios.put(`https://backendexample.sanbersy.com/api/data-game/${selectedId}`, {
-              name: input.name,
-              description: input.description,
-              singlePalyer: input.singlepalyer,
-              multiplayer: input.multiplayer,
-              genre: input.genre,
-              release: input.release
-            },{
-              headers : { "Authorization" : `Bearer ${user.token}`}} )
-            .then(res => {
-                let singleGames = games.find(el=> el.id === selectedId)
-                singleGames.name = input.name
-                singleGames.genre = input.genre
-                singleGames.singlePlayer = input.singlePlayer
-                singleGames.multiplayer = input.multiplayer
-                singleGames.platform = input.platform
-                singleGames.release = input.release
-                setGames([...games])
-            })
-          }
-        
-        setStatusForm("create")
-        setSelectedId(0)
-        setInput({
-          name: "",
-          genre: "",
-          singlePlayer: "",
-          multiplayer: "",
-          platform: "",
-          release: "",
-          image_url: ""
+      const url = `https://backendexample.sanbersy.com/api/data-game`;
+      Axios.post(url, newData, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+        .then((res) => {
+          alert("Data Berhasil Masuk");
+          console.log(res.response);
         })
-      }
-  
-    }
+        .catch((err) => {
+          console.log(err.response);
+        });
+    };
   
       const handleDelete = (e) => {  
         const id = e.target.id
@@ -291,7 +262,7 @@ const GameList = () => {
       <div className="container">     
         <div className="content">
             <h1>daftar Games</h1>
-            <form className="search" onSubmit={submitSearch}>
+            <form className="form-search" onSubmit={submitSearch}>
             <input type="text" value={search} onChange={handleChangeSearch} />
             <button>search</button>
             </form>
@@ -299,67 +270,49 @@ const GameList = () => {
         </div>
             <div className="content">
                 <h1>Form Submit New Games</h1>
-                <form className="form-input" onSubmit={handleSubmit}>
-                <div className="input">
-                    <label >
-                    Name:
-                    </label>
-                    <input type="text" name="name" value={input.name} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input">
-                    <label >
-                    Genre:
-                    </label>
-                    <textarea type="text" name="genre" value={input.genre} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    singlePlayer:
-                    </label>
-                    <input type="text" name="singlePlayer" value={input.singlePlayer} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    Multiplayer:
-                    </label>
-                    <input type="text" name="multiplayer" value={input.multiplayer} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    Platform:
-                    </label>
-                    <input type="text" name="platform" value={input.platform} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    Release:
-                    </label>
-                    <input type="text" name="release" value={input.release} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    Image Url:
-                    </label>
-                    <input type="text" cols="50" rows="3" type="text" name="image_url" value={input.image_url} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="submit">
-                <button>submit</button>
-                </div>
-                </form>
+                <Container>
+      <Row>
+        <Col md="8" className="mx-auto mt-5">
+          <Form
+            className="form-input"
+            onFinish={handleSubmit}
+          >
+            <Form.Item className="input" label="Name" name="name">
+              <Input placeholder="input Name" />
+            </Form.Item>
+            <Form.Item className="input" label="Genre" name="genre">
+              <Input placeholder="input Genre" />
+            </Form.Item>
+            <Form.Item name="mode" className="input">
+              <Checkbox.Group style={{ width: "100%" }}>
+                <Row className="sp-mp">
+                  <Col span={8}>
+                    <Label>SinglePlayer : </Label>
+                    <Checkbox value="one" />
+                  </Col>
+                  <Col span={8}>
+                    <Label>MultiPlayer : </Label>
+                    <Checkbox value="two" />
+                  </Col>
+                </Row>
+              </Checkbox.Group>
+            </Form.Item>
+            <Form.Item className="input" label="Platform" name="platform">
+              <Input placeholder="input Platform" />
+            </Form.Item>
+            <Form.Item className="input" label="Release" name="release">
+              <Input placeholder="input Release" />
+            </Form.Item>
+            <Form.Item className="input" label="Image_Url" name="image_url">
+              <Input placeholder="input Image_Url" />
+            </Form.Item>
+            <Button type="primary" htmlType="submit" className="primary mb-2">
+              Submit
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
             </div>
           </div>
       </>

@@ -1,183 +1,118 @@
-import React, {useEffect, useState, useContext, useHistory} from "react"
-import { useParams} from "react-router-dom"
+import React, { useContext, useEffect, useState } from "react";
+import { Form, Input, Button, Checkbox, InputNumber } from "antd";
+import { useHistory, useParams } from "react-router-dom";
+import { Container, Row, Col, Label } from "reactstrap";
 import Axios from "axios"
 import { UserContext } from '../context/context'
 
 
 
+
 const SGameEdit = ()=>{
+  const [form] = Form.useForm();
+  const [formLayout] = useState("horizontal");
   const [user] = useContext(UserContext)
   let {id} = useParams()
   const [data, setData] = useState(null)
-  const [movies, setMovies] =  useState(null)
-  const [input, setInput]  =  useState({
-    name: "",
-    genre:"",
-    singlePlayer: "",
-    multiplayer: "",
-    platform: "",
-    release: "",
-  })
-  const [selectedId, setSelectedId]  =  useState(0)  
-  const [statusForm, setStatusForm]  =  useState("create")  
+   const [games,setGames] = useState(null)
+    const [input,setInput] = useState({
+       name: "",
+       genre:"",
+       singlePlayer: 0,
+       multiplayer: 0,
+       platform: "",
+       release: "",
+    })
+  const history = useHistory();
 
 
   useEffect(() => {
-    if (data === null){
-      Axios.get(`https://backendexample.sanbersy.com/api/data-game/${id}`)
-      .then(res => {
-        setInput(res.data)
-        console.log(res.data)
-      })
+    if (data === null) {
+      Axios.get(`https://backendexample.sanbersy.com/api/data-game/${id}`).then(
+        (res) => {
+          form.setFieldsValue(res.data);
+          setInput(res.data)
+          console.log(res.data)
+        }
+      );
     }
   }, [data, setData, id]);
 
-  const handleChange = (event) =>{
-    let typeOfInput = event.target.name
+  const handleSubmit = (values) => {
+    let singlePlayer = values.mode.includes("one") ? 1 : 0;
+    let multiPlayer = values.mode.includes("two") ? 1 : 0;
 
-    switch (typeOfInput){
-      case "name":
-      {
-        setInput({...input, name: event.target.value});
-        break
-      }
-      case "genre":
-      {
-        setInput({...input, genre: event.target.value});
-        break
-      }
-      case "singlePlayer":
-      {
-        setInput({...input, singlePlayer: event.target.value});
-          break
-      }
-      case "multiplayer":
-      {
-        setInput({...input, multiplayer: event.target.value});
-          break
-      }
-      case "platform":
-        {
-          setInput({...input, platform: event.target.value});
-            break
-        }
-      case "release":
-        {
-          setInput({...input, release: event.target.value});
-            break
-        }
-      case "image_url":
-        {
-          setInput({...input, image_url: event.target.value});
-            break
-        }
-    default:
-      {break;}
-    }
-  }
+    const newData = {
+      name: values.name,
+      genre: values.genre,
+      singlePlayer: singlePlayer,
+      multiplayer: multiPlayer,
+      platform: values.platform,
+      release: values.release,
+      image_url: values.image_url,
+    };
 
-  const handleEditForm = (e) => {
-    e.preventDefault()
+    console.log(values, "berhasil update");
+    const url = `https://backendexample.sanbersy.com/api/data-game/${id}`;
 
-      Axios.put(`https://backendexample.sanbersy.com/api/data-game/${id}`, {
-        name: input.name,
-        genre: input.genre,
-        singlePlayer: input.singlePlayer,
-        multiplayer: input.multiplayer,
-        platform: input.platform,
-        release: input.release,
-        image_url: input.image_url
-      },
-      { headers: { Authorization: `Bearer ${user.token}` } })
-      .then(res => {
-          console.log(res)
-      })
-    
-
-    setStatusForm("create")
-    setSelectedId(0)
-    setInput({
-        name: "",
-        genre: "",
-        singlePlayer: "",
-        multiplayer: "",
-        platform: "",
-        release: "",
-        image_url: ""
-      })
-  }
+    Axios.put(url, newData, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    }).then((res) => {
+      alert("Berhasil Update Data");
+      history.push("/games");
+      console.log(res.data);
+    });
+  };
 
   return (
-    <>
-       <div className="container">
-            <div className="content">
-                <h1>Form Submit New Movie</h1>
-                <form className="form-input" onSubmit={handleEditForm}>
-                <div className="input">
-                    <label >
-                    Name:
-                    </label>
-                    <input type="text" name="name" value={input.name} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input">
-                    <label >
-                    Genre:
-                    </label>
-                    <textarea type="text" name="genre" value={input.genre} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    singlePlayer:
-                    </label>
-                    <input type="text" name="singlePlayer" value={input.singlePlayer} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    Multiplayer:
-                    </label>
-                    <input type="text" name="multiplayer" value={input.multiplayer} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    Platform:
-                    </label>
-                    <input type="text" name="platform" value={input.platform} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    Release:
-                    </label>
-                    <input type="text" name="release" value={input.release} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="input" style={{marginTop: "20px"}}>
-                    <label >
-                    Image Url:
-                    </label>
-                    <input type="text" cols="50" rows="3" type="text" name="image_url" value={input.image_url} onChange={handleChange}/>
-                    <br/>
-                    <br/>
-                </div>
-                <div className="submit">
-                <button>submit</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </>
-   
-  )
+    <Container>
+      <Row>
+        <Col md="8" className="mx-auto mt-5">
+          <Form className="form-input"
+          layout={formLayout}
+          form={form}
+          initialValues={{
+           layout: formLayout,
+           }}
+            onFinish={handleSubmit}
+          >
+            <Form.Item className="input" label="Name" name="name">
+              <Input placeholder="input Name" />
+            </Form.Item>
+            <Form.Item className="input" label="Genre" name="genre">
+              <Input placeholder="input Genre" />
+            </Form.Item>
+            <Form.Item className="input" name="mode">
+              <Checkbox.Group style={{ width: "100%" }}>
+                <Row className="sp-mp">
+                  <Col span={8}>
+                    <Label>SinglePlayer : </Label>
+                    <Checkbox value="one" />
+                  </Col>
+                  <Col span={8}>
+                    <Label>MultiPlayer : </Label>
+                    <Checkbox value="two" />
+                  </Col>
+                </Row>
+              </Checkbox.Group>
+            </Form.Item>
+            <Form.Item className="input" label="Platform" name="platform">
+              <Input placeholder="input Platform" />
+            </Form.Item>
+            <Form.Item className="input" label="Release" name="release">
+              <Input placeholder="input Release" />
+            </Form.Item>
+            <Form.Item className="input" label="Image_Url" name="image_url">
+              <Input placeholder="input Image_Url" />
+            </Form.Item>
+            <Button type="primary" htmlType="submit" className="primary mb-2">
+              Update
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+  );
 }
 
 export default SGameEdit
