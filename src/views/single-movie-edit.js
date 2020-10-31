@@ -2,6 +2,7 @@ import React, {useEffect, useState, useContext,useHistory} from "react"
 import { useParams} from "react-router-dom"
 import Axios from "axios"
 import { UserContext } from '../context/context'
+import back from '../icon/back.svg'
 import {
   BrowserRouter as Router,
   Switch,
@@ -117,8 +118,14 @@ const SingleMovieEdit = ()=>{
     <>
        <div className="container">
             <div className="content">
-              <img src="/FP-Sanbercode-Reactjs-Batch18/public/icon/iconfinder_undo-back-arrow_2931166.svg" alt="back"/>
-                <h1>Form Submit New Movie</h1>
+            <div className="form-title">
+                  <div className="icon-back">
+                        <Link to="/movie">
+                          <img class="back" alt="back" src={back}/>
+                        </Link>
+                  </div>
+                </div>
+                <h1>Form  Edit Movie</h1>
                 <form className="form-input">
                 <div className="input">
                     <label>

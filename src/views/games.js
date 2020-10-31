@@ -11,6 +11,9 @@ import {
   Redirect,
   Link
 } from "react-router-dom";
+import edit from '../icon/edit.svg'
+import view from '../icon/view.svg'
+import del from '../icon/delete.svg'
 
 const GameList = () => {
     const [user] = useContext(UserContext)
@@ -202,6 +205,7 @@ const GameList = () => {
         dataIndex: "name",
         key: "title",
         width: 200,
+        
       },
       {
         title: "Genre",
@@ -209,16 +213,26 @@ const GameList = () => {
         key: "genre",
       },
       {
-        title: "Pingleplayer",
+        title: "Singleplayer",
         dataIndex: "singlePlayer",
         key: "singlePlayer",
         tableLayout: "auto",
+        filters: [
+          {text: "Yes", value: 1},
+          {text: "No", value: 0}
+        ],
+        onFilter: (value, record) => record.multiplayer === value,
       },
       {
         title: "Multiplayer",
         dataIndex: "multiplayer",
         key: "multiplayer",
         tableLayout: "auto",
+        filters: [
+          {text: "Yes", value: 1},
+          {text: "No", value: 0}
+        ],
+        onFilter: (value, record) => record.multiplayer === value,
       },
       {
         title: "Platform",
@@ -232,7 +246,6 @@ const GameList = () => {
         tableLayout: "auto",
         sorter: {
           compare: (a, b) => a.release - b.release,
-          multiple: 1,
         },
       },
       {
@@ -241,15 +254,17 @@ const GameList = () => {
         render: (e) => (
           <Space size="middle">
             <Link to={`games/${e.id}`} >
-              View
+            <img className="icon" alt="view" src={view} />
             </Link>
 
             <Link to={`games/edit/${e.id}`}>
-              Edit
+              <img className="icon" alt="edit" src={edit} />
             </Link>
           
             <Link to="games" id={e.id}  title="Delete">
-              <a id={e.id} onClick={handleDelete}>Delete</a>
+              <a id={e.id} onClick={handleDelete}>
+               <img className="icon" alt="delete" src={del} />
+              </a>
             </Link>
           </Space>
         ),
@@ -260,9 +275,9 @@ const GameList = () => {
     return(
       <>
       <div className="container">     
-        <div className="content">
-            <h1>daftar Games</h1>
-            <form className="form-search" onSubmit={submitSearch}>
+        <div className="content mleft">
+            <h1>Daftar Games</h1>
+            <form className="form-search fsgame" onSubmit={submitSearch}>
             <input type="text" value={search} onChange={handleChangeSearch} />
             <button>search</button>
             </form>

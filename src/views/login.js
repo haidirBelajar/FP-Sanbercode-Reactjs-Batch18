@@ -3,6 +3,7 @@ import {UserContext} from "../context/context"
 import {UserProvider} from '../context/context'
 import axios from "axios"
 import { useHistory } from "react-router-dom";
+import usericon from '../icon/user.svg'
 
 const Login = () =>{
   const [,setUser] = useContext(UserContext)
@@ -50,19 +51,29 @@ const Login = () =>{
     <>
       <div className="container-content">
           <div className="content">
-              <form className="form-input" onSubmit={handleSubmit}>
-              <div className="input">
-                <label>Email: </label>
-                <input type="email" name="email" onChange={handleChange} value={input.email}/>
+              <div className="card-login">
+                <div className="login-title">
+                  <div className="logtit">
+                    Login
+                  </div>
+                  <div className="icon-user">
+                    <img className="" alt="user" src={usericon} />
+                  </div>
+                </div>
+                <form className="form-input" onSubmit={handleSubmit}>
+                      <div className="input login">
+                        <label>Email: </label>
+                        <input type="email" name="email" autoComplete="off" onChange={handleChange} value={input.email} placeholder="input your email here"/>
+                      </div>
+                      <div className="input login">
+                        <label>Password: </label>
+                        <input type="password" name="password" autoComplete="off" onChange={handleChange} value={input.password} placeholder="input your password here"/>
+                      </div>
+                      <div className="submit">
+                        <button>Login</button>
+                      </div>
+                  </form>
               </div>
-              <div className="input">
-                <label>Password: </label>
-                <input type="password" name="password" onChange={handleChange} value={input.password}/>
-              </div>
-              <div className="submit">
-                <button>Login</button>
-              </div>
-            </form>
           </div>
       </div>
     </>

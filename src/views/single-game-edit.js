@@ -4,8 +4,14 @@ import { useHistory, useParams } from "react-router-dom";
 import { Container, Row, Col, Label } from "reactstrap";
 import Axios from "axios"
 import { UserContext } from '../context/context'
-
-
+import back from '../icon/back.svg'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  Link
+} from "react-router-dom";
 
 
 const SGameEdit = ()=>{
@@ -66,51 +72,61 @@ const SGameEdit = ()=>{
 
   return (
     <Container>
-      <Row>
-        <Col md="8" className="mx-auto mt-5">
-          <Form className="form-input"
-          layout={formLayout}
-          form={form}
-          initialValues={{
-           layout: formLayout,
-           }}
-            onFinish={handleSubmit}
-          >
-            <Form.Item className="input" label="Name" name="name">
-              <Input placeholder="input Name" />
-            </Form.Item>
-            <Form.Item className="input" label="Genre" name="genre">
-              <Input placeholder="input Genre" />
-            </Form.Item>
-            <Form.Item className="input" name="mode">
-              <Checkbox.Group style={{ width: "100%" }}>
-                <Row className="sp-mp">
-                  <Col span={8}>
-                    <Label>SinglePlayer : </Label>
-                    <Checkbox value="one" />
-                  </Col>
-                  <Col span={8}>
-                    <Label>MultiPlayer : </Label>
-                    <Checkbox value="two" />
-                  </Col>
-                </Row>
-              </Checkbox.Group>
-            </Form.Item>
-            <Form.Item className="input" label="Platform" name="platform">
-              <Input placeholder="input Platform" />
-            </Form.Item>
-            <Form.Item className="input" label="Release" name="release">
-              <Input placeholder="input Release" />
-            </Form.Item>
-            <Form.Item className="input" label="Image_Url" name="image_url">
-              <Input placeholder="input Image_Url" />
-            </Form.Item>
-            <Button type="primary" htmlType="submit" className="primary mb-2">
-              Update
-            </Button>
-          </Form>
-        </Col>
-      </Row>
+          <Row>
+            <Col md="8" className="mx-auto mt-5">
+              <Form className="form-input"
+              layout={formLayout}
+              form={form}
+              initialValues={{
+              layout: formLayout,
+              }}
+                onFinish={handleSubmit}
+              >
+                <div className="form-title">
+                  <div className="icon-back">
+                        <Link to="/games">
+                          <img class="back" alt="back" src={back}/>
+                        </Link>
+                  </div>
+                  <div className="title">
+                    <h1>Form Edit Games</h1>
+                  </div>
+                </div>
+                <Form.Item className="input" label="Name" name="name">
+                  <Input placeholder="input Name" />
+                </Form.Item>
+                <Form.Item className="input" label="Genre" name="genre">
+                  <Input placeholder="input Genre" />
+                </Form.Item>
+                <Form.Item className="input" name="mode">
+                  <Checkbox.Group style={{ width: "100%" }}>
+                    <Row className="sp-mp">
+                      <Col span={8}>
+                        <Label>SinglePlayer : </Label>
+                        <Checkbox value="one" />
+                      </Col>
+                      <Col span={8}>
+                        <Label>MultiPlayer : </Label>
+                        <Checkbox value="two" />
+                      </Col>
+                    </Row>
+                  </Checkbox.Group>
+                </Form.Item>
+                <Form.Item className="input" label="Platform" name="platform">
+                  <Input placeholder="input Platform" />
+                </Form.Item>
+                <Form.Item className="input" label="Release" name="release">
+                  <Input placeholder="input Release" />
+                </Form.Item>
+                <Form.Item className="input" label="Image_Url" name="image_url">
+                  <Input placeholder="input Image_Url" />
+                </Form.Item>
+                <Button type="primary" htmlType="submit" className="primary mb-2">
+                  Update
+                </Button>
+              </Form>
+            </Col>
+          </Row>
     </Container>
   );
 }

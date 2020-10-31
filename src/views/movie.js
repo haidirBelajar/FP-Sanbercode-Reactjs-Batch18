@@ -10,6 +10,9 @@ import {
   Link
 } from "react-router-dom";
 import SingleMovie from '../views/single-movie'
+import edit from '../icon/edit.svg'
+import view from '../icon/view.svg'
+import del from '../icon/delete.svg'
 
 const MovieList = () => {
     const [user] = useContext(UserContext)
@@ -271,13 +274,13 @@ const MovieList = () => {
         render: (el) => (
           <Space size="middle">
             <Link to={`movie/${el.id}`} >
-             View
+              <img class="icon" alt="view" src={view}/>
             </Link>
             <Link to={`movie/edit/${el.id}`}>
-             Edit
+              <img class="icon"  alt="edit" src={edit}/>
             </Link>
               <a id={el.id} onClick={handleDelete} title="Delete">
-                Delete
+                <img class="icon" alt="delete" src={del}/>
             </a>
             
           </Space>
@@ -291,7 +294,7 @@ const MovieList = () => {
           <div className="container">
             <div className="content">
                 <h1>Daftar Film</h1>
-                <form className="search" onSubmit={submitSearch}>
+                <form className="form-search fsmov" onSubmit={submitSearch}>
                   <input type="text" value={search} onChange={handleChangeSearch} />
                   <button>search</button>
                 </form>

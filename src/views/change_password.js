@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../context/context";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import usericon from '../icon/user.svg'
 
 const ChangePassword = () => {
     const [user] = useContext(UserContext)
@@ -64,26 +65,35 @@ const ChangePassword = () => {
     return (
         <div className="container-content">
           <div className="content">
-        <h1>Change Password</h1>
-        <form className="form-input" onSubmit={handleSubmit}>
-            <div className="input">
-                <label>Current Password</label>
-                <input type="password" name="current_password" value={input.current_password} onChange={handleChange}/>    
-            </div> 
-            <div className="input">
-                <label>New Password</label>
-                <input type="password" name="new_password" value={input.new_password} onChange={handleChange}/>    
-            </div>
-            <div className="input">
-                <label>Confirm New Password</label>
-                <input type="password" name="new_confirm_password" value={input.new_confirm_password} onChange={handleChange}/>    
-            </div>
-            <div className="submit">
-                <button>Submit</button>
-            </div>
-        </form>
-        </div>
-      </div>
+            <div className="card-login">
+                <div className="login-title">
+                  <div className="logtit">
+                     <h1>Change Password</h1>
+                  </div>
+                  <div className="icon-user">
+                    <img className="" alt="user" src={usericon} />
+                  </div>
+                </div>
+                <form className="form-input" onSubmit={handleSubmit}>
+                    <div className="input login">
+                        <label>Current Password</label>
+                        <input type="password" name="current_password" value={input.current_password} onChange={handleChange}/>    
+                    </div> 
+                    <div className="input login">
+                        <label>New Password</label>
+                        <input type="password" name="new_password" value={input.new_password} onChange={handleChange}/>    
+                    </div>
+                    <div className="input login">
+                        <label>Confirm New Password</label>
+                        <input type="password" name="new_confirm_password" value={input.new_confirm_password} onChange={handleChange}/>    
+                    </div>
+                    <div className="submit">
+                        <button>Submit</button>
+                    </div>
+                </form>
+             </div>
+           </div>
+         </div>
     ) 
 }
 

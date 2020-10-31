@@ -8,6 +8,11 @@ import {
     Redirect,
     Link
   } from "react-router-dom";
+import fb from '../icon/facebook-logo.svg'
+import igicon from '../icon/instagram.svg'
+import linkedin from '../icon/linkedin.svg'
+import telegramicon from '../icon/telegram.svg'
+
 
 const {Footer} = Layout
 
@@ -21,16 +26,30 @@ const FooterView = () => {
         <Layout>
         <Footer>
             <div>
-            <label> created by comoy</label>
+            <label className="comoy"> created by comoy</label>
             </div>
             <div>
                <ul>
                     <li>
-                        <a href=""><IconFont type="icon-facebook" /></a>    
+                        <a href="https://web.facebook.com/haidir.chaniago" target="_blank">
+                        <img src={fb} alt="fb" className="icon-footer" />
+                        </a>    
                     </li>   
                     <li>
-                        <a href=""><IconFont type="icon-twitter" /></a>    
+                         <a href="https://www.instagram.com/haidirchaniago " target="_blank">
+                        <img src={igicon} alt="fb" className="icon-footer" />
+                        </a>   
                     </li>  
+                    <li>
+                        <a href="https://t.me/comoy" target="_blank">
+                        <img src={telegramicon} alt="fb" className="icon-footer" />
+                        </a>  
+                    </li>
+                    <li>
+                         <a href="https://www.linkedin.com/in/muhammad-haidir/" target="_blank">
+                        <img src={linkedin} alt="fb" className="icon-footer" />
+                        </a>  
+                    </li>
                 </ul> 
             </div>
         </Footer>
