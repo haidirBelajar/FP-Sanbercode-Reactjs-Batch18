@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useContext,useHistory} from "react"
-import { useParams} from "react-router-dom"
+import React, {useEffect, useState, useContext} from "react"
+import { useHistory,useParams} from "react-router-dom"
 import Axios from "axios"
 import { UserContext } from '../context/context'
 import back from '../icon/back.svg'
@@ -27,7 +27,7 @@ const SingleMovieEdit = ()=>{
   })
   const [selectedId, setSelectedId]  =  useState(0)  
   const [statusForm, setStatusForm]  =  useState("create")  
-
+  const history = useHistory();
 
   useEffect(() => {
     if (data === null){
@@ -98,6 +98,7 @@ const SingleMovieEdit = ()=>{
       { headers: { Authorization: `Bearer ${user.token}` } })
       .then(res => {
           console.log(res)
+          history.push("/movie");
       })
     
 
@@ -174,12 +175,6 @@ const SingleMovieEdit = ()=>{
                 </div>
                
                 </form>
-
-                <div className="btn-mov">
-                  <Link to="/movie"> 
-                  <button className="btn-del">Back to List</button>
-                </Link>
-                </div>
             </div>
         </div>
     </>

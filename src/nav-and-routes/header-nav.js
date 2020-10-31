@@ -63,7 +63,7 @@ const { Header, Content, Sider } = Layout;
                 </Header>
                <Content>
                <Layout className="site-layout-background">
-                    <Sider className="site-layout-background" width={150}>
+                    <Sider className="site-layout-background">
                     {user ? <>
                     <Menu
                         mode="inline"

@@ -25,10 +25,10 @@ const FooterView = () => {
     return (
         <Layout>
         <Footer>
-            <div>
+            <div className="copyright">
             <label className="comoy"> created by comoy</label>
             </div>
-            <div>
+            <div className="icon-footer-menu">
                <ul>
                     <li>
                         <a href="https://web.facebook.com/haidir.chaniago" target="_blank">

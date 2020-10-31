@@ -1,3 +1,11 @@
+.ant-layout.ant-layout-has-sider {
+  height: 100vh;
+}
+
+.ant-layout {
+  background: #fefefe !important;
+}
+
 .container {
   padding-top : 32px;
   padding-bottom: 64px;
@@ -84,7 +92,7 @@
 }
 
 .ant-layout-sider {
-  background-color: #F0F2F5 !important;
+  background-color: #fefefe!important;
   height: 50%;
 }
 
@@ -155,6 +163,7 @@
 
 .movie-desc {
   margin-left: 16px;
+  width: 50%;
 }
 
 .ant-layout-footer ul {
@@ -237,6 +246,10 @@ h2.ant-typography, .ant-typography h2 {
   background-color: #fefefe !important;
 }
 
+.ant-layout-header ul li a {
+  color: #567698 !important;
+}
+
 .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub{
   background-color: #fefefe !important;
 }
@@ -248,4 +261,69 @@ h2.ant-typography, .ant-typography h2 {
 
 .comoy {
   color: #567698 !important;
+}
+
+/* Responsive */
+
+
+
+@media only screen and (max-width: 991px){
+  .ant-table-container {
+    overflow: auto;
+  }
+  .input {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 600px){
+  .ant-layout {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .ant-layout-sider {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .ant-layout-sider-children {
+    position: relative;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .ant-card {
+    margin-right: 0 !important;
+  }
+  .ant-layout-footer {
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+  .copyright {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .input {
+    width: 80%;
+  }
+  .icon-footer-menu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .icon-footer-menu ul{
+    padding-inline-start: 0 !important;
+  }
+  .isi {
+    width: 100%;
+  }
+  .content-movie {
+    flex-direction: column;
+  }
+  .movie-img {
+    width: 100%;
+  }
+  .card-login {
+    width: 100%;
+  }
+ 
+
 }

@@ -149,20 +149,19 @@ const MovieList = () => {
 
    
 
-    const handleDelete = (e) => {
-      const id = e.target.id
-      console.log(id)
-      const url = `https://backendexample.sanbersy.com/api/data-movie/${id}`;
-      Axios.delete(url, { headers: { Authorization: `Bearer ${user.token}` } })
-        .then((res) => {
-          console.log(res);
-          setMovies(null);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
+    const handleDelete = (id) => {
+      let idDataMovie = parseInt(id)
+      let newDaftarMovie = movies.filter(el => el.id !== idDataMovie)
+  
+      Axios.delete(`https://backendexample.sanbersy.com/api/data-movie/${idDataMovie}`,
+      {headers: {"Authorization" : `Bearer ${user.token}`}})
+      .then(res => {
+          setMovies([...newDaftarMovie])
+          alert("The movie has been deleted")
+      }).catch(err => {
+        alert("This movie can't be deleted")
+      })
+    }
  
 
    
@@ -273,15 +272,20 @@ const MovieList = () => {
         key: "action",
         render: (el) => (
           <Space size="middle">
+            <Button type="primary" size="small" style={{backgroundColor: "orange"}} >
             <Link to={`movie/${el.id}`} >
               <img class="icon" alt="view" src={view}/>
             </Link>
+            </Button>
+            <Button type="primary" size="small" style={{backgroundColor: "yellow"}}>
             <Link to={`movie/edit/${el.id}`}>
               <img class="icon"  alt="edit" src={edit}/>
             </Link>
-              <a id={el.id} onClick={handleDelete} title="Delete">
-                <img class="icon" alt="delete" src={del}/>
-            </a>
+            </Button>
+            <Button type="primary" size="small" style={{backgroundColor: "red"}} 
+             onClick={() => handleDelete(el.id)} value="x">
+              <img class="icon"  alt="edit" src={del}/>
+          </Button>
             
           </Space>
         ),

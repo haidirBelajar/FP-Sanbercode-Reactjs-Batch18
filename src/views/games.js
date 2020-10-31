@@ -120,23 +120,20 @@ const GameList = () => {
         });
     };
   
-      const handleDelete = (e) => {  
-        const id = e.target.id
-        const url = `https://backendexample.sanbersy.com/api/data-game/${id}`;
-       
-        Axios.delete(url, {
-          headers: {
-            Authorization: `Bearer ${user.token}`
-          }
-        }).then(res =>{
-          console.log(res)
-          setGames(null)
-        })
-        .catch((err)=>{
-          console.log(err)
-        });
-        
-      }
+    const handleDelete = (id) => {
+      let idDataGame = parseInt(id)
+      let newListGames = games.filter(el => el.id !== idDataGame)
+  
+      Axios.delete(`https://backendexample.sanbersy.com/api/data-game/${idDataGame}`,
+      {headers: {"Authorization" : `Bearer ${user.token}`}})
+      .then(res => {
+          setGames([...newListGames])
+          alert("The game has been deleted")
+      }).catch(res => {
+        alert("This game can't be deleted")
+      })
+    }
+  
       
       const handleEdit = (e) =>{
         let singleGames = games.find(x=> x.id === e.id)
@@ -251,21 +248,22 @@ const GameList = () => {
       {
         title: "Action",
         key: "action",
-        render: (e) => (
+        render: (el) => (
           <Space size="middle">
-            <Link to={`games/${e.id}`} >
-            <img className="icon" alt="view" src={view} />
+            <Button type="primary" size="small" style={{backgroundColor: "orange"}} >
+            <Link to={`games/${el.id}`} >
+              <img class="icon" alt="view" src={view}/>
             </Link>
-
-            <Link to={`games/edit/${e.id}`}>
-              <img className="icon" alt="edit" src={edit} />
+            </Button>
+            <Button type="primary" size="small" style={{backgroundColor: "yellow"}}>
+            <Link to={`games/edit/${el.id}`}>
+              <img class="icon"  alt="edit" src={edit}/>
             </Link>
-          
-            <Link to="games" id={e.id}  title="Delete">
-              <a id={e.id} onClick={handleDelete}>
-               <img className="icon" alt="delete" src={del} />
-              </a>
-            </Link>
+            </Button>
+            <Button type="primary" size="small" style={{backgroundColor: "red"}} 
+             onClick={() => handleDelete(el.id)} value="x">
+              <img class="icon"  alt="edit" src={del}/>
+          </Button>
           </Space>
         ),
         width: 200,
