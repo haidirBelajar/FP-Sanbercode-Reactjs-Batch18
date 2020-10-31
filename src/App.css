@@ -6,6 +6,7 @@
   background: #fefefe !important;
 }
 
+
 .container {
   padding-top : 32px;
   padding-bottom: 64px;
@@ -113,6 +114,7 @@
   justify-content: space-between !important;
   background-color: #001529 !important;
   color: #fff !important;
+  border-top: 1px solid grey;
 }
 
 .content {
@@ -242,16 +244,28 @@ h2.ant-typography, .ant-typography h2 {
 }
 
 .ant-layout-header {
-  box-shadow: rgba(14, 45, 63, 0.08) 1px 8px 17px 2px !important;
+  border-bottom: 1px solid #fefefe;
   background-color: #fefefe !important;
+  box-shadow: rgba(14, 45, 63, 0.08) 1px 8px 17px 2px;
+}
+
+.ant-layout-header ul {
+  border-bottom: 1px solid grey !important;
+  box-shadow: rgba(14, 45, 63, 0.08) 1px 8px 17px 2px;
 }
 
 .ant-layout-header ul li a {
   color: #567698 !important;
 }
 
+.ant-menu-dark.ant-menu-horizontal {
+
+  border-bottom: 1px solid grey !important;
+}
+
 .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub{
   background-color: #fefefe !important;
+  border-bottom: 1px solid grey !important;
 }
 
 .ant-layout-footer {
@@ -262,6 +276,7 @@ h2.ant-typography, .ant-typography h2 {
 .comoy {
   color: #567698 !important;
 }
+
 
 /* Responsive */
 

@@ -4,6 +4,7 @@ import { Table, Button, Typography, Space } from "antd";
 import { Form, Input, Checkbox, InputNumber } from "antd";
 import { Container, Row, Col, Label } from "reactstrap";
 import { UserContext } from '../context/context'
+import { useHistory, useParams } from "react-router-dom";
 import {
   BrowserRouter as Router,
   Switch,
@@ -29,6 +30,7 @@ const GameList = () => {
     const [selectedId, setSelectedId]  =  useState(0)
     const [statusForm, setStatusForm]  =  useState("create")
     const [search, setSearch] = useState("")
+    const history = useHistory();
     useEffect( () => {
         if (games === null){
             Axios.get(`https://backendexample.sanbersy.com/api/data-game`)
@@ -112,8 +114,8 @@ const GameList = () => {
         headers: { Authorization: `Bearer ${user.token}` },
       })
         .then((res) => {
-          alert("Data Berhasil Masuk");
-          console.log(res.response);
+          history.push("/games")
+          setGames([newData])
         })
         .catch((err) => {
           console.log(err.response);
@@ -252,17 +254,17 @@ const GameList = () => {
           <Space size="middle">
             <Button type="primary" size="small" style={{backgroundColor: "orange"}} >
             <Link to={`games/${el.id}`} >
-              <img class="icon" alt="view" src={view}/>
+              <img className="icon" alt="view" src={view}/>
             </Link>
             </Button>
             <Button type="primary" size="small" style={{backgroundColor: "yellow"}}>
             <Link to={`games/edit/${el.id}`}>
-              <img class="icon"  alt="edit" src={edit}/>
+              <img className="icon"  alt="edit" src={edit}/>
             </Link>
             </Button>
             <Button type="primary" size="small" style={{backgroundColor: "red"}} 
              onClick={() => handleDelete(el.id)} value="x">
-              <img class="icon"  alt="edit" src={del}/>
+              <img className="icon"  alt="edit" src={del}/>
           </Button>
           </Space>
         ),
